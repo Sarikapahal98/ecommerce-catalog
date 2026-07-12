@@ -8,6 +8,9 @@ db = SQLAlchemy(app)#every model class (User, Category, Product) you write will 
 
 from flask import render_template
 from models import Category, Product
+from flask import request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash
+from models import User
 
 @app.route('/')
 def home():
@@ -33,3 +36,26 @@ def product_detail(product_id):
 def categories():
     all_categories = Category.query.all()
     return render_template('categories.html', categories=all_categories)
+
+app.secret_key = 'dev-secret-key-change-later'
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash('Username already taken. Please choose another.')
+            return redirect(url_for('register'))
+        
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, email=email,  password_hash=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Account created successfully! Please log in.')
+        return redirect(url_for('login'))
+    return render_template('register.html')
