@@ -8,8 +8,8 @@ db = SQLAlchemy(app)#every model class (User, Category, Product) you write will 
 
 from flask import render_template
 from models import Category, Product
-from flask import request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
+from flask import request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 
 @app.route('/')
@@ -59,3 +59,20 @@ def register():
         flash('Account created successfully! Please log in.')
         return redirect(url_for('login'))
     return render_template('register.html')
+
+@app.route('/login' , methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password_hash, password):
+            session['user_id'] = user.id
+            flash(f'Welcome back, {user.username}!')
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid username or password!')
+            return redirect(url_for('login'))
+    return render_template('login.html')
