@@ -160,12 +160,44 @@ footer {
     border-radius: 8px;
 }
 
-.dtail-info {
+.detail-info {
     flex: 1;
     min-width: 250px;
 }
 
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 340px;
+    margin-top: 24px;
+}
 
+.auth-form label {
+    margin-top: 14px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.auth-form input {
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.auth-form button {
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-greeting {
+    color: red;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-left: auto;
+}
 
 
 

@@ -11,6 +11,7 @@ from models import Category, Product
 from flask import request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
+from flask import g 
 
 @app.route('/')
 def home():
@@ -76,3 +77,14 @@ def login():
             flash('Invalid username or password!')
             return redirect(url_for('login'))
     return render_template('login.html')
+
+@app.before_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+    g.user = User.query.get(user_id) if user_id else None
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('You have been logged out.')
+    return redirect(url_for('home'))
