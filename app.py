@@ -88,3 +88,10 @@ def logout():
     session.pop('user_id', None)
     flash('You have been logged out.')
     return redirect(url_for('home'))
+
+@app.route('/admin')
+def admin_dashboard():
+    if not g.user or not g.user.is_admin:
+        flash('Admin access required.')
+        return redirect(url_for('login'))
+    return render_template('admin_base.html')
