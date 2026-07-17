@@ -95,3 +95,11 @@ def admin_dashboard():
         flash('Admin access required.')
         return redirect(url_for('login'))
     return render_template('admin_base.html')
+
+@app.route('/admin/products')
+def admin_products():
+    if not g.user or not g.user.is_admin:
+        flash('Admin access required.')
+        return redirect(url_for('login'))
+    all_products = Product.query.all()
+    return render_template('admin_products.html', products=all_products)
