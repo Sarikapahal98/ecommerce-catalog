@@ -103,3 +103,26 @@ def admin_products():
         return redirect(url_for('login'))
     all_products = Product.query.all()
     return render_template('admin_products.html', products=all_products)
+
+@app.route('/admin/products/add', methods=['GET', 'POST'])
+def admin_add_product():
+    if not g.user or not g.user.is_admin:
+        flash('Admin access required.')
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        new_product = Product(
+            name=request.form['name'],
+            price=float(request.form['price']),
+            description=request.form['description'],
+            image_url=request.form['image_url'],
+            category_id=int(request.form['category_id'])
+        )
+        
+        db.session.add(new_product)
+        db.session.commit()
+        flash('Product added successfully!')
+        return redirect(url_for('admin_products'))
+    
+    all_categories = Category.query.all()
+    return render_template('admin_add_product.html', categories=all_categories)
