@@ -15,7 +15,7 @@
         <li><a href ="/products">Products</a></li>
         <li><a href ="/categories">Categories</a></li>
         {% if g.user %}
-            <li class ="nav-greeting">Hello, {{ g.user.username }}{% if g.user.is_admin %} (Admin){% endif %}</li>
+            <li class="nav-greeting">Hello, {{ g.user.username }}</li>
             <li><a href="/logout">Logout</a></li>
         {% else %}
             <li><a href = "/login">Login</a></li>

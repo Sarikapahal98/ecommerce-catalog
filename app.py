@@ -118,7 +118,7 @@ def admin_add_product():
             image_url=request.form['image_url'],
             category_id=int(request.form['category_id'])
         )
-        
+
         db.session.add(new_product)
         db.session.commit()
         flash('Product added successfully!')
@@ -126,3 +126,36 @@ def admin_add_product():
     
     all_categories = Category.query.all()
     return render_template('admin_add_product.html', categories=all_categories)
+
+@app.route('/admin/products/edit/<int:product_id>', methods=['GET', 'POST'])
+def admin_edit_product(product_id):
+    if not g.user or not g.user.is_admin:
+        flash('Admin access required.')
+        return redirect(url_for('login'))
+    
+    product = Product.query.get_or_404(product_id)
+
+    if request.method == 'POST':
+        product.name = request.form['name']
+        product.price = float(request.form['price'])
+        product.description = request.form['description']
+        product.image_url = request.form['image_url']
+        product.category_id = int(request.form['category_id'])
+        db.session.commit()
+        flash('Product updated successfully!')
+        return redirect(url_for('admin_products'))
+    
+    all_categories = Category.query.all()
+    return render_template('admin_edit_product.html', product=product, categories=all_categories)
+
+@app.route('/admin/products/delete/<int:product_id>')
+def admin_delete_product(product_id):
+    if not g.user or not g.user.is_admin:
+        flash('Admin access required. ')
+        return redirect(url_for('login'))
+    
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+    flash('Product deleted. ')
+    return redirect(url_for('admin_products'))
