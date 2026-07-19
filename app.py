@@ -72,6 +72,8 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             session['user_id'] = user.id
             flash(f'Welcome back, {user.username}!')
+            if user.is_admin:
+                return redirect(url_for('admin_dashboard'))
             return redirect(url_for('home'))
         else:
             flash('Invalid username or password!')

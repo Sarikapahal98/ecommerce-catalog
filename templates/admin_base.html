@@ -1,15 +1,30 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin - Mystore</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body class="admin-body">
 
-{% block content %}
-<div class="admin-layout">
-    <aside class="admin-sidebar">
-        <h3>Admin Panel</h3>
-        <ul>
-            <li><a href="/admin/products">Products</a></li>
-        </ul>
-    </aside>
-    <section class="admin-content">
-        {% block admin_content %}{% endblock %}
-    </section>
-</div>
-{% endblock %}
+        <header class="admin-topbar">
+            <h1>MyStore Admin</h1>
+            <div class="admin-topbar-right">
+                <span>{{ g.user.username }}</span>
+                <a href="/logout">Logout</a>
+            </div>
+        </header>
+
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <ul>
+                    <li><a href="/admin/products">Products</a></li>
+                </ul>
+            </aside>
+            <section class="admin-content">
+                {% block admin_content %}{% endblock %}
+            </section>
+        </div>
+
+    </body>
+</html>

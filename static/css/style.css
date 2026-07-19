@@ -249,6 +249,28 @@ footer {
     color: white;
 }
 
+.admin-topbar {
+    background: #16213e;
+    color: white;
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-topbar-right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.admin-topbar-right a {
+    color: white;
+}
+
+.admin-layout {
+    padding: 30px;
+}
 
 
 
