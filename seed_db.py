@@ -1,6 +1,7 @@
-from app import app, db
-from models import Category, Product
+from app import create_app, db
+from app.models import Category, Product
 
+app = create_app()
 with app.app_context():
 
     electronics = Category(name='Electronics')
