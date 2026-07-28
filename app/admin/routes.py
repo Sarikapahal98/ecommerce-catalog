@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 from app.admin import admin_bp
 from app.admin.decorators import admin_required
 from app.models import Product, Category
@@ -46,7 +46,7 @@ def admin_edit_product(product_id):
         product.image_url = request.form['image_url']
         product.category_id = int(request.form['category_id'])
         db.session.commit()
-        flash('Product updaated successfully!')
+        flash('Product updated successfully!')
         return redirect(url_for('admin.admin_products'))
     
     all_categories = Category.query.all()
@@ -60,4 +60,51 @@ def admin_delete_product(product_id):
     db.session.commit()
     flash('Product deleted. ')
     return redirect(url_for('admin.admin_products'))
+
+@admin_bp.route('/categories')
+@admin_required
+def admin_categories():
+    all_categories = Category.query.all()
+    return render_template('admin/categories/admin_categories.html', categories=all_categories)
+
+@admin_bp.route('/categories/add', methods=['GET', 'POST'])
+@admin_required
+def admin_add_category():
+    if request.method == 'POST':
+        new_category = Category(name=request.form['name'])
+        db.session.add(new_category)
+        db.session.commit()
+        flash('Category added successfully!')
+        return redirect(url_for('admin.admin_categories'))
+    return render_template('admin/categories/admin_add_category.html')
+
+@admin_bp.route('/categories/edit/<int:category_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_category(category_id):
+    category = Category.query.get_or_404(category_id)
+
+    if request.method == 'POST':
+        category.name = request.form['name']
+        db.session.commit()
+        flash('Category updated successfully!')
+        return redirect(url_for('admin.admin_categories'))
+    return render_template('admin/categories/admin_edit_category.html', category=category)
+
+@admin_bp.route('/categories/delete/<int:category_id>')
+@admin_required
+def admin_delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
+
+    if category.products:
+        flash(f'Cannot delete "{category.name}"- it still has products assigned to it. Reassign or delete those products first.')
+        return redirect(url_for('admin.admin_categories'))
+
+    db.session.delete(category)
+    db.session.commit()
+    flash('Category deleted.')
+    return redirect(url_for('admin.admin_categories'))
+
+
+
+
 

@@ -1,0 +1,30 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<h2>Manage Categories</h2>
+<a href="/admin/categories/add" class="cta-button">+ Add Category</a>
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <TH>Name</TH>
+            <th># Products</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.products|length }}</td>
+            <td>
+                <a href="/admin/categories/edit/{{ category.id }}">Edit</a> |
+                <a href="/admin/categories/delete/{{ category.id }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
