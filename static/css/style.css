@@ -272,5 +272,29 @@ footer {
     padding: 30px;
 }
 
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
 
+.filter-bar input, .filter-bar select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.paginatiom {
+    display:flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    color: #1a1a2e;
+    font-weight: 600;
+    text-decoration: none;
+}
 
