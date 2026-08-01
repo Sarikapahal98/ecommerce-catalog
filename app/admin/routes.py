@@ -1,7 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, g
 from app.admin import admin_bp
 from app.admin.decorators import admin_required
-from app.models import Product, Category
+from app.models import Product, Category, User
 from app import db
 
 @admin_bp.route('/')
@@ -103,6 +103,27 @@ def admin_delete_category(category_id):
     db.session.commit()
     flash('Category deleted.')
     return redirect(url_for('admin.admin_categories'))
+
+@admin_bp.route('/users')
+@admin_required
+def admin_users():
+    all_users = User.query.all()
+    return render_template('admin/users/admin_users.html', users=all_users)
+
+@admin_bp.route('/users/toggle-admin/<int:user_id>')
+@admin_required 
+def admin_toggle_admin(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if user.id == g.user.id :
+        flash('An admin cannot remove thier own admin status')
+        return redirect(url_for('admin.admin_users'))
+
+    user.is_admin = not user.is_admin
+
+    db.session.commit()
+    flash('Admin status changed!')
+    return redirect(url_for('admin.admin_users'))
 
 
 
