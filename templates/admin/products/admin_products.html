@@ -3,7 +3,20 @@
 {% block admin_content %}
 <h2>Manage Products</h2>
 <a href="/admin/products/add" class="cta-button">+ Add Product</a>
+<form method="'GET" action="/admin/products" class="'filter-bar">
+        <input type="text" name="search" placeholder="Search products..." value="{{ search_query }}">
 
+        <select name="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+               <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>
+                {{ category.name }}
+               </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="cta-button">Search</button>
+</form>
 <table class="admin-table">
     <thead>
         <tr>
@@ -26,7 +39,21 @@
                 <a href="/admin/products/delete/{{ product.id }}">Delete</a>
             </td>
         </tr>
+        {% else %}
+        <p>No products found.</p>
         {% endfor %}
     </tbody>
 </table>
+
+<div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="/admin/products?page={{ pagination.prev_num }}&search={{ search_query }}&category={{ selected_category or '' }}">&laquo; Prev</a>
+        {% endif %}
+
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+        {% if pagination.has_next %}
+            <a href="/admin/products?page={{ pagination.next_num }}&search={{ search_query }}&category={{ selected_category or '' }}">Next &raquo;</a>
+        {% endif %}
+    </div>
 {% endblock %}
