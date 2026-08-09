@@ -6,7 +6,15 @@
     <div class="detail-info">
         <h2>{{ product.name }}</h2>
         <p class="category-tag">{{ product.category.name }}</p>
+        {% if product.discount_percent and product.discount_percent > 0 %}
+        <p class="price">
+            <span class="'original-price">${{ "%.2f"|format(product.price) }}</span>
+            <span class="discounted-price">${{ "%.2f"|format(product.final_price) }}</span>
+            <span class="discount-badge">-{{ product.discount_percent|int }}%</span>
+        </p>
+        {% else %}
         <p class="price">${{ "%.2f"|format(product.price) }}</p>
+        {% endif %}
         <p>{{ product.description }}</p>
     </div>
 </div>

@@ -41,6 +41,7 @@ def category_products(category_id):
 
 @main_bp.route('/products/<int:product_id>')
 def product_detail(product_id):
+    query = Product.query.filter_by(is_active=True)
     product = Product.query.get_or_404(product_id)
     return render_template('main/product_detail.html', product=product)
 

@@ -22,8 +22,16 @@
     {% for product in products %}
     <div class="product-card">
         <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
-        <h3><a href="/product/{{ product.id }}">{{ product.name }}</a></h3>
+        <h3><a href="/products/{{ product.id }}">{{ product.name }}</a></h3>
+        {% if product.discount_percent and product.discount_percent > 0 %}
+        <p class="price">
+            <span class="'original-price">${{ "%.2f"|format(product.price) }}</span>
+            <span class="discounted-price">${{ "%.2f"|format(product.final_price) }}</span>
+            <span class="discount-badge">-{{ product.discount_percent|int }}%</span>
+        </p>
+        {% else %}
         <p class="price">${{ "%.2f"|format(product.price) }}</p>
+        {% endif %}
         <p class="category-tag">{{ product.category.name }}</p>
     </div>
     {% else %}

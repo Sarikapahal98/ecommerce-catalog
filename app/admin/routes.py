@@ -63,6 +63,7 @@ def admin_edit_product(product_id):
     if request.method == 'POST':
         product.name = request.form['name']
         product.price = float(request.form['price'])
+        product.discount_percent = float(request.form.get('discount_percent', 0) or 0)
         product.description = request.form['description']
         product.image_url = request.form['image_url']
         product.category_id = int(request.form['category_id'])
