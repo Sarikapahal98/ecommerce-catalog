@@ -10,6 +10,7 @@
             <TH>Username</TH>
             <th>Email</th>
             <th>is_admin</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,13 @@
                     YES - <a href="/admin/users/toggle-admin/{{ user.id }}">Remove Admin</a>
                 {% else %}
                     NO - <a href="/admin/users/toggle-admin/{{ user.id }}">Make Admin</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if user.is_active %}
+                    Active - <a href="/admin/users/toggle-status/{{ user.id }}">Disable</a>
+                {% else %}
+                    Disabled - <a href="/admin/users/toggle-status/{{ user.id }}">Enable</a>
                 {% endif %}
             </td>
         </tr>

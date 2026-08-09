@@ -42,6 +42,7 @@ def admin_add_product():
         new_product = Product(
             name=request.form['name'],
             price=float(request.form['price']),
+            discount_percent=float(request.form.get('discount_percent', 0) or 0),
             description=request.form['description'],
             image_url=request.form['image_url'],
             category_id=int(request.form['category_id'])
@@ -144,6 +145,28 @@ def admin_toggle_admin(user_id):
     db.session.commit()
     flash('Admin status changed!')
     return redirect(url_for('admin.admin_users'))
+
+@admin_bp.route('/products/toggle-status/<int:product_id>')
+@admin_required
+def admin_toggle_product_status(product_id):
+    product = Product.query.get_or_404(product_id)
+    product.is_active = not product.is_active
+    db.session.commit()
+    flash(f'{product.name} is now {"active" if product.is_active else "disabled"}.')
+    return redirect(url_for('admin.admin_products'))
+
+@admin_bp.route('/user/toggle-status/<int:user_id>')
+@admin_required
+def admin_toggle_user_status(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.id == g.user.id:
+        flash('You cannot disable your own account.')
+        return redirect(url_for('admin.admin_users'))
+    user.is_active = not user.is_active
+    db.session.commit()
+    flash(f'{user.username} is now {"active" if user.is_active else "disabled"}.')
+    return redirect(url_for('admin.admin_users'))
+
 
 
 

@@ -12,7 +12,7 @@ def products():
     category_id = request.args.get('category', type=int)
     page = request.args.get('page', 1, type=int)
 
-    query = Product.query
+    query = Product.query.filter_by(is_active=True)
 
     if search_query:
         query = query.filter(Product.name.ilike(f'%{search_query}%'))
@@ -34,6 +34,7 @@ def products():
 
 @main_bp.route('/category/<int:category_id>')
 def category_products(category_id):
+    query = Product.query.filter_by(is_active=True)
     category = Category.query.get_or_404(category_id)
     filtered_products = Product.query.filter_by(category_id=category_id).all()
     return render_template('main/products.html', products=filtered_products, category=category)

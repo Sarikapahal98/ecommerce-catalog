@@ -16,11 +16,19 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable = True )
     image_url = db.Column(db.String(300), nullable = True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))#category-Table name(lowercase converted by default) and id is its column
+    is_active = db.Column(db.Boolean, default=True)
+    discount_percent = db.Column(db.Float, default=0)
 
     category = db.relationship('Category', backref='products')#relation between product and category ...if a is category and b is product then i can write a.products=list of products of category a 2)b.category=gives you id + name of the category the product belongs to 
 
-    def __repe__(self):
+    def __repr__(self):
         return f"<Product {self.name}>"
+
+    @property
+    def final_price(self):
+        if self.discount_percent and self.discount_percent >0:
+            return round(self.price * (1 - self.discount_percent/100), 2)
+        return self.price
     
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -28,6 +36,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True )
 
     def __repr__(self):
         return f"<User {self.name}>"

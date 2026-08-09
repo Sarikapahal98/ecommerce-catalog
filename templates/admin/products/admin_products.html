@@ -25,6 +25,7 @@
             <th>Price</th>
             <th>Category</th>
             <th>Actions</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +38,13 @@
             <td>
                 <a href="/admin/products/edit/{{ product.id }}">Edit</a> |
                 <a href="/admin/products/delete/{{ product.id }}">Delete</a>
+            </td>
+            <td>
+                {% if product.is_active %}
+                    Active - <a href="/admin/products/toggle-status/{{ product.id }}">Disable</a>
+                {% else %}
+                    Disabled - <a href="/admin/products/toggle-status/{{ product.id }}">Enable</a>
+                {% endif %}
             </td>
         </tr>
         {% else %}
