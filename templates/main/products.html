@@ -3,7 +3,7 @@
 {% block content %}
    <h2>Our Products</h2>
 
-   <form method="'GET" action="/products" class="'filter-bar">
+   <form method="GET" action="/products" class="filter-bar">
         <input type="text" name="search" placeholder="Search products..." value="{{ search_query }}">
 
         <select name="category" onchange="this.form.submit()">
@@ -24,8 +24,8 @@
         <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
         <h3><a href="/products/{{ product.id }}">{{ product.name }}</a></h3>
         {% if product.discount_percent and product.discount_percent > 0 %}
-        <p class="price">
-            <span class="'original-price">${{ "%.2f"|format(product.price) }}</span>
+        <p>
+            <span class="original-price">${{ "%.2f"|format(product.price) }}</span>
             <span class="discounted-price">${{ "%.2f"|format(product.final_price) }}</span>
             <span class="discount-badge">-{{ product.discount_percent|int }}%</span>
         </p>

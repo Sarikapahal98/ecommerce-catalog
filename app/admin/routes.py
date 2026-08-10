@@ -132,7 +132,7 @@ def admin_users():
     all_users = User.query.all()
     return render_template('admin/users/admin_users.html', users=all_users)
 
-@admin_bp.route('/users/toggle-admin/<int:user_id>')
+@admin_bp.route('/users/toggle-admin/<int:user_id>', methods=['POST'])
 @admin_required 
 def admin_toggle_admin(user_id):
     user = User.query.get_or_404(user_id)

@@ -27,11 +27,9 @@
                 {% endif %}
             </td>
             <td>
-                {% if user.is_active %}
-                    Active - <a href="/admin/users/toggle-status/{{ user.id }}">Disable</a>
-                {% else %}
-                    Disabled - <a href="/admin/users/toggle-status/{{ user.id }}">Enable</a>
-                {% endif %}
+                <form method="POST" action="/admin/users/toggle-admin/{{ user.id }}">
+                    <input type="checkbox" onchange="this.form.submit()" {% if user.is_admin %}checked{% endif %} {% if user.id == g.user_id %}disabled{% endif %}>
+                </form>
             </td>
         </tr>
         {% endfor %}
