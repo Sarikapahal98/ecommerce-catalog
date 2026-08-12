@@ -2,7 +2,10 @@
 <html lang="en"><!--page's language--> 
 <head><!--#meta data -->
     <meta charset="UTF-8"><!--#avoid weird char/emoji glitch-->
-    <title>MyStore</title>
+    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <title>{% block title %}MyStore{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Shop the latest products at MyStore - quality electronics, clothing, and more.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}ecommerce, online shopping, electronics, clothing{% endblock %}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 </head>
 <body>
