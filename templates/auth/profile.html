@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Profile</h2>
+
+<div class="profile-card">
+    <p><strong>Username:</strong> {{ g.user.username }}</p>
+    <p><strong>Email:</strong> {{ g.user.email }}</p>
+    <p><strong>Account type:</strong> {{ "Admin" if g.user.is_admin else "Customer" }}</p>
+    <a href="/profile/edit" class="cta-button">Edit Profile</a>
+</div>
+{% endblock %}

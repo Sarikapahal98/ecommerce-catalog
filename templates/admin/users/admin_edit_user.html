@@ -1,0 +1,16 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<h2>Edit User</h2>
+
+<form method="POST" action="/admin/users/edit/{{ user.id }}" class="auth-form">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" value="{{ user.username }}" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+    <button type="submit" class="cta-button">Save Changes</button>
+</form>
+
+{% endblock %}

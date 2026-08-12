@@ -177,7 +177,19 @@ def admin_toggle_category_status(category_id):
     flash(f'{category.name} is now {"active" if category.is_active else "disabled"}.')
     return redirect(url_for('admin.admin_categories'))
     
+@admin_bp.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_user(user_id):
+    user = User.query.get_or_404(user_id)
 
+    if request.method == 'POST':
+        user.username = request.form['username']
+        user.email = request.form['email']
+        db.session.commit()
+        flash('User updated successfully!')
+        return redirect(url_for('admin.admin_users'))
+
+    return render_template('admin/users/admin_edit_user.html', user=user)
 
 
 

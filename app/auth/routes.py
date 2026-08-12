@@ -1,8 +1,10 @@
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, g
+from app.auth.decorators import login_required
 from werkzeug.security import generate_password_hash, check_password_hash 
 from app.auth import auth_bp
 from app.models import User
 from app import db
+
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -51,3 +53,45 @@ def logout():
     session.pop('user_id', None)
     flash('You have been logged out.')
     return redirect(url_for('main.home'))
+
+@auth_bp.route('/profile')
+@login_required
+def profile():
+    return render_template('auth/profile.html')
+
+@auth_bp.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    user = g.user
+
+    if request.method == 'POST':
+        new_username = request.form['username']
+        new_email = request.form['email']
+
+        existing = User.query.filter(User.username == new_username, User.id != user.id).first()
+        if existing:
+            flash('That username is already taken. ')
+            return redirect(url_for('auth.edit_profile'))
+
+        user.username = new_username
+        user.email = new_email
+
+        new_password = request.form.get('new_password', '').strip()
+        if new_password:
+            current_password = request.form.get('current_password', '')
+            if not check_password_hash(user.password_hash, current_password):
+                flash('Current password is incorrect. Profile info updated, but password was not changed.')
+                db.session.commit()
+                return redirect(url_for('auth.profile'))
+            user.password_hash = generate_password_hash(new_password)
+
+        db.session.commit()
+        flash('Profile updated successfully')
+        return redirect(url_for('auth.profile'))
+
+    return render_template('auth/edit_profile.html', user=user)
+
+    
+
+
+        

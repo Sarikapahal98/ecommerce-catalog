@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit Profile</h2>
+
+<form method="POST" action="/profile/edit" class="auth-form">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" value="{{ user.username }}" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+    <hr>
+    <p>Leave blank to keep your current password.</p>
+
+    <label for="current_password">Current Password</label>
+    <input type="password" id="current_password" name="current_password">
+
+    <label for="new_password">New Password</label>
+    <input type="password" id="new_password" name="new_password">
+
+    <button type="submit" class="cta-button">Save Changes</button>
+</form>
+{% endblock %}
