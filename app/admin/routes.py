@@ -168,6 +168,16 @@ def admin_toggle_user_status(user_id):
     flash(f'{user.username} is now {"active" if user.is_active else "disabled"}.')
     return redirect(url_for('admin.admin_users'))
 
+@admin_bp.route('/category/toggle-status/<int:category_id>')
+@admin_required
+def admin_toggle_category_status(category_id):
+    category = Category.query.get_or_404(category_id)
+    category.is_active = not category.is_active
+    db.session.commit()
+    flash(f'{category.name} is now {"active" if category.is_active else "disabled"}.')
+    return redirect(url_for('admin.admin_categories'))
+    
+
 
 
 

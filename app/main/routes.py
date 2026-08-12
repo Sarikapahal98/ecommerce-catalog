@@ -31,13 +31,26 @@ def products():
                             selected_category=category_id
                            )
 
-
 @main_bp.route('/category/<int:category_id>')
 def category_products(category_id):
-    query = Product.query.filter_by(is_active=True)
     category = Category.query.get_or_404(category_id)
-    filtered_products = Product.query.filter_by(category_id=category_id).all()
-    return render_template('main/products.html', products=filtered_products, category=category)
+
+    page = request.args.get('page', 1, type=int)
+
+    query = Product.query.filter_by(category_id=category_id, is_active=True)
+    pagination = query.paginate(page=page, per_page=8, error_out=False)
+
+    all_categories = Category.query.all()
+
+    return render_template(
+        'main/products.html',
+        products=pagination.items,
+        pagination=pagination,
+        categories=all_categories,
+        search_query='',
+        selected_category=category_id,
+        category=category
+    )
 
 @main_bp.route('/products/<int:product_id>')
 def product_detail(product_id):

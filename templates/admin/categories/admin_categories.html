@@ -1,9 +1,11 @@
 {% extends "admin/admin_base.html" %}
 
 {% block admin_content %}
+<div class="admin-header-row">
 <h2>Manage Categories</h2>
 <a href="/admin/categories/add" class="cta-button">+ Add Category</a>
 
+</div>
 <table class="admin-table">
     <thead>
         <tr>
@@ -11,6 +13,7 @@
             <TH>Name</TH>
             <th># Products</th>
             <th>Actions</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +25,13 @@
             <td>
                 <a href="/admin/categories/edit/{{ category.id }}">Edit</a> |
                 <a href="/admin/categories/delete/{{ category.id }}">Delete</a>
+            </td>
+            <td>
+                {% if category.is_active %}
+                    <span class="status-badge status-active">Active</span> — <a href="/admin/category/toggle-status/{{ category.id }}">Disable</a>
+                {% else %}
+                    <span class="status-badge status-disabled">Disabled</span> — <a href="/admin/category/toggle-status/{{ category.id }}">Enable</a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

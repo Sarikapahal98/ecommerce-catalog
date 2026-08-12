@@ -20,16 +20,16 @@
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
             <td>
-                {% if user.is_admin %}
-                    YES - <a href="/admin/users/toggle-admin/{{ user.id }}">Remove Admin</a>
-                {% else %}
-                    NO - <a href="/admin/users/toggle-admin/{{ user.id }}">Make Admin</a>
-                {% endif %}
-            </td>
-            <td>
                 <form method="POST" action="/admin/users/toggle-admin/{{ user.id }}">
                     <input type="checkbox" onchange="this.form.submit()" {% if user.is_admin %}checked{% endif %} {% if user.id == g.user_id %}disabled{% endif %}>
                 </form>
+            </td>
+            <td>
+                {% if user.is_active %}
+                    <span class="status-badge status-active">Active</span> — <a href="/admin/user/toggle-status/{{ user.id }}">Disable</a>
+                {% else %}
+                    <span class="status-badge status-disabled">Disabled</span> — <a href="/admin/user/toggle-status/{{ user.id }}">Enable</a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

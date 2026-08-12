@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="products-header">
    <h2>Our Products</h2>
 
    <form method="GET" action="/products" class="filter-bar">
@@ -17,7 +18,7 @@
 
         <button type="submit" class="cta-button">Search</button>
    </form>
-   
+</div>
    <div class ="product-grid">
     {% for product in products %}
     <div class="product-card">
