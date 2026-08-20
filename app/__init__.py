@@ -24,6 +24,12 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix='/admin')
 
     from flask import g
+    from app.models import SiteSettings
+
+    @app.context_processor
+    def inject_settings():
+        settings = SiteSettings.query.first()
+        return dict(site_settings=settings)
 
     @app.before_request
     def load_logged_in_user():

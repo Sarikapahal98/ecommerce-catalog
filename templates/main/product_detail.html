@@ -5,6 +5,13 @@
 {% block content %}
 <div class="product-detail">
     <img rc="{{ product.image_url }}" alt="{{ product.name }}" class="detail-image">
+    {% if product.image %}
+    <div class="gallery-thhumbnails">
+        {% for image in product.images %}
+        <img src="{{ image.image_url }}" alt="{{ product.name }}" class="thumb">
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="detail-info">
         <h2>{{ product.name }}</h2>
         <p class="category-tag">{{ product.category.name }}</p>

@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, session, g
 from app.admin import admin_bp
 from app.admin.decorators import admin_required
-from app.models import Product, Category, User
+from app.models import Product, Category, User, ProductImage, SiteSettings
 from app import db
 
 @admin_bp.route('/')
@@ -191,7 +191,46 @@ def admin_edit_user(user_id):
 
     return render_template('admin/users/admin_edit_user.html', user=user)
 
+@admin_bp.route('/products/<int:product_id>/images', methods=['GET', 'POST'])
+@admin_required
+def admin_product_images(product_id):
+    product = Product.query.get_or_404(product_id)
+
+    if request.method == 'POST':
+        new_image_url = request.form['image_url'].strip()
+        if new_image_url:
+            new_image = ProductImage(image_url=new_image_url, product_id=product.id)
+            db.session.add(new_image)
+            db.session.commit()
+            flash('Image added!')
+        return redirect(url_for('admin.admin_product_images', product_id=product.id))
+    return render_template('admin/products/admin_product_images.html', product=product)
+
+@admin_bp.route('/products/images/delete/<int:image_id>')
+@admin_required
+def admin_delete_product_image(image_id):
+    image = ProductImage.query.get_or_404(image_id)
+    product_id = image.product_id
+    db.session.delete(image)
+    db.session.commit()
+    flash('Image removed.')
+    return redirect(url_for('admin.admin_product_images', product_id=product_id))
 
 
+@admin_bp.route('/settings', methods=['GET', 'POST'])
+@admin_required
+def admin_settings():
+    settings = SiteSettings.query.first()
 
+    if request.method == 'POST':
+        settings.site_name = request.form['site_name']
+        settings.tagline = request.form['tagline']
+        settings.logo_url = request.form['logo_url']
+        settings.contact_email = request.form['contact_email']
+        settings.contact_phone = request.form['contact_phone']
+        db.session.commit()
+        flash('Settings updated')
+        return redirect(url_for('admin/settings/admin_settings.html', settings=settings))
+    return render_template('admin/settings/admin_settings.html', settings=settings)
 
+    

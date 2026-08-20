@@ -41,3 +41,22 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.name}>"
+
+class ProductImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_url = db.Column(db.String(300), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
+    product = db.relationship('Product', backref='images')
+
+    def __repr__(self):
+        return f"<ProductImage {self.image_url}>"
+
+class SiteSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    site_name = db.Column(db.String(100), default='MyStore')
+    tagline = db.Column(db.String(200), default='Quality products, honest prices.')
+    logo_url = db.Column(db.String(300), default='')
+    contact_email = db.Column(db.String(120), default='')
+    contact_phone = db.Column(db.String(30), default='')
+

@@ -1,0 +1,22 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<h2>Manage Images - {{ product.name }}</h2>
+
+<form method="POST" action="/admin/products/{{ product.id }}/images" class="auth-form">
+    <label for="image_url">Image URL</label>
+    <input type="text" id="image_url" name="image_url" placeholder="https://..." required>
+    <button type="submit" class="cta-button">Add Image</button>
+</form>
+
+<div class="image-gallery-admin">
+    {% for image in product.images %}
+    <div class="gallery-thumb">
+        <img src="{{ image.image_url }}" alt="{{ product.name }}">
+        <a href="/admin/products/images/delete/{{ image.id }}" class="delete-link">Delete</a>
+    </div>
+    {% else %}
+    <p>No additional images yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

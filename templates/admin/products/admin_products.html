@@ -38,6 +38,7 @@
             <td>{{ "%.2f"|format(product.price) }}</td>
             <td>{{ product.category.name }}</td>
             <td>
+                <a href="/admin/products/{{ product.id }}/images">Images</a> |
                 <a href="/admin/products/edit/{{ product.id }}">Edit</a> |
                 <a href="/admin/products/delete/{{ product.id }}">Delete</a>
             </td>

@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import Category, Product
+from app.models import Category, Product, SiteSettings
 
 app = create_app()
 with app.app_context():
@@ -19,6 +19,15 @@ with app.app_context():
     ]
 
     db.session.add_all(products)
+    db.session.commit()
+
+    settings = SiteSettings(
+        site_name='MyStore',
+        tagline='Quality products, honest prices.',
+        contact_email='support@mystore.com',
+        contact_phone=''
+    )
+    db.session.add(settings)
     db.session.commit()
 
     print("Database seeded successfully!")

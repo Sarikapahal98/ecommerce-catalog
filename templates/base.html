@@ -3,14 +3,19 @@
 <head><!--#meta data -->
     <meta charset="UTF-8"><!--#avoid weird char/emoji glitch-->
     <meta name="viewport" content=""width=device-width, initial-scale="1.0">
-    <title>{% block title %}MyStore{% endblock %}</title>
+    <title>{% block title %}{{ site_settings.site_name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Shop the latest products at MyStore - quality electronics, clothing, and more.{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}ecommerce, online shopping, electronics, clothing{% endblock %}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 </head>
 <body>
 <header>
-    <h1>MyStore</h1>
+    {% if site_settings.logo_url %}
+    <img src="{{ site_settings.logo_url }}" alt="{{ aite_settings.site_name }}" class="site-logo">
+    {% else %}
+    <h1>{{ site_settings.site_name }}</h1>
+    {% endif %}
+    <p class="tagline">{{ site_settings.tagline }}</p>
 </header>
 <nav>
     <ul>
@@ -41,7 +46,10 @@
 </main>
 
 <footer>
-    <p>&copy; 2026 MyStore. All rights reserved.</p>
+    <p>&copy; 2026 {{ site_settings.site_name }}. All rights reserved.</p>
+    {% if site_settings.contact_email %}
+    <p>Contact: {{ site_settings.contact_email }}</p>
+    {% endif %}
 </footer>
 </body>
 </html>

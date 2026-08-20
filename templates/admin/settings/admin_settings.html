@@ -1,0 +1,22 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<h2>Site Settings</h2>
+
+<form method="POST" action="/admin/settings" class="auth-form">
+    <label for="site_name">Site Name</label>
+    <input type="text" id="site_name" name="site_name" value="{{ settings.site_name }}" required>
+
+    <label for="tagline">Tagline</label>
+    <input type="text" id="tagline" name="tagline" value="{{ settings.tagline }}">
+
+    <label for="logo_url">Logo URL</label>
+    <input type="text" id="logo_url" name="logo_url" value="{{ settings.logo_url }}">
+
+    <label for="contact_email">Contact Email</label>
+    <input type="text" id="contact_phone" name="conatct_phone" value="{{ settings.contact_phone }}">
+    
+    <button type="submit" class="cta-button">Save Settings</button>
+
+</form>
+{% endblock %}
